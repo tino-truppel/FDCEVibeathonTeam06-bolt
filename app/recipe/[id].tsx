@@ -306,9 +306,9 @@ export default function RecipeDetailScreen() {
       </TouchableOpacity>
       
       {/* Success Overlay */}
-      {showSuccessOverlay && (
+      {/* {showSuccessOverlay && ( */}
         <Modal
-          visible={showSuccessOverlay}
+          visible={true}
           transparent={true}
           animationType="fade"
           onRequestClose={handleCloseOverlay}
@@ -328,7 +328,7 @@ export default function RecipeDetailScreen() {
             </TouchableOpacity>
           </Animated.View>
         </Modal>
-      )}
+      {/* )} */}
       
       {/* Confetti */}
       {showConfetti && (
