@@ -66,7 +66,7 @@ export default function AppmundScreen() {
     setTimeout(() => {
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'I understand you want to adjust the recipe. Let me help you with that modification.',
+        text: 'I understand you want to adjust the recipe. Let me help you with that modification. Would you like to create a new recipe based on this?',
         isUser: false,
         timestamp: new Date(),
       };
@@ -88,7 +88,7 @@ export default function AppmundScreen() {
     setTimeout(() => {
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `I understand you want to "${suggestion.toLowerCase()}". Let me help you with that modification to the recipe.`,
+        text: `I understand you want to "${suggestion.toLowerCase()}". Let me help you with that modification to the recipe. Would you like to create a new recipe based on this?`,
         isUser: false,
         timestamp: new Date(),
       };
@@ -160,37 +160,56 @@ export default function AppmundScreen() {
     }, 100);
   }, [messages]);
 
+  const handleCreateRecipe = (messageId: string) => {
+    // Handle recipe creation logic here
+    console.log('Creating new recipe for message:', messageId);
+    // You can add navigation to a recipe creation screen or show a modal
+  };
+
   const renderMessage = (message: Message) => (
-    <View
-      key={message.id}
-      style={[
-        styles.messageContainer,
-        message.isUser ? styles.userMessage : styles.botMessage,
-      ]}
-    >
-      {!message.isUser && (
-        <View style={styles.botAvatarContainer}>
-          <Image
-            source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=60' }}
-            style={styles.botAvatar}
-          />
-        </View>
-      )}
+    <View key={message.id}>
       <View
         style={[
-          styles.messageBubble,
-          message.isUser ? styles.userBubble : styles.botBubble,
+          styles.messageContainer,
+          message.isUser ? styles.userMessage : styles.botMessage,
         ]}
       >
-        <Text
+        {!message.isUser && (
+          <View style={styles.botAvatarContainer}>
+            <Image
+              source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=60' }}
+              style={styles.botAvatar}
+            />
+          </View>
+        )}
+        <View
           style={[
-            styles.messageText,
-            message.isUser ? styles.userText : styles.botText,
+            styles.messageBubble,
+            message.isUser ? styles.userBubble : styles.botBubble,
           ]}
         >
-          {message.text}
-        </Text>
+          <Text
+            style={[
+              styles.messageText,
+              message.isUser ? styles.userText : styles.botText,
+            ]}
+          >
+            {message.text}
+          </Text>
+        </View>
       </View>
+      
+      {/* Confirmation button for bot messages */}
+      {!message.isUser && message.id !== '1' && (
+        <View style={styles.confirmationContainer}>
+          <TouchableOpacity
+            style={styles.confirmationButton}
+            onPress={() => handleCreateRecipe(message.id)}
+          >
+            <Text style={styles.confirmationButtonText}>Yes!</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 
@@ -481,5 +500,30 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.7)',
     textAlign: 'center',
     marginTop: 4,
+  },
+  confirmationContainer: {
+    alignItems: 'flex-start',
+    paddingLeft: 52, // Align with bot message bubble (avatar width + margin)
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  confirmationButton: {
+    backgroundColor: '#CD853F',
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  confirmationButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
