@@ -10,10 +10,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Alert,
 } from 'react-native';
 import { X, Mic, ArrowUp } from 'lucide-react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Speech from 'expo-speech';
 
 interface Message {
   id: string;
@@ -40,6 +42,7 @@ export default function AppmundScreen() {
     },
   ]);
   const [inputText, setInputText] = useState('');
+  const [isListening, setIsListening] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const handleBack = () => {
@@ -91,6 +94,63 @@ export default function AppmundScreen() {
       };
       setMessages(prev => [...prev, botResponse]);
     }, 1000);
+  };
+
+  const handleVoiceInput = async () => {
+    if (Platform.OS === 'web') {
+      // Web Speech API implementation
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+        const recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'de-DE'; // German language
+        
+        recognition.onstart = () => {
+          setIsListening(true);
+        };
+        
+        recognition.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript;
+          setInputText(transcript);
+          setIsListening(false);
+        };
+        
+        recognition.onerror = (event: any) => {
+          console.error('Speech recognition error:', event.error);
+          setIsListening(false);
+          Alert.alert('Fehler', 'Spracherkennung fehlgeschlagen. Bitte versuchen Sie es erneut.');
+        };
+        
+        recognition.onend = () => {
+          setIsListening(false);
+        };
+        
+        recognition.start();
+      } else {
+        Alert.alert('Nicht unterstützt', 'Spracherkennung wird in diesem Browser nicht unterstützt.');
+      }
+    } else {
+      // For mobile platforms, we'll simulate voice input for now
+      // In a real app, you would use expo-speech or react-native-voice
+      setIsListening(true);
+      
+      // Simulate voice recognition delay
+      setTimeout(() => {
+        setIsListening(false);
+        // Simulate recognized text
+        const simulatedVoiceInputs = [
+          'Mache es vegan',
+          'Füge mehr Protein hinzu',
+          'Reduziere die Kalorien',
+          'Mache es glutenfrei',
+          'Verwende weniger Salz'
+        ];
+        const randomInput = simulatedVoiceInputs[Math.floor(Math.random() * simulatedVoiceInputs.length)];
+        setInputText(randomInput);
+      }, 2000);
+    }
   };
 
   useEffect(() => {
@@ -214,7 +274,12 @@ export default function AppmundScreen() {
                 blurOnSubmit={false}
               />
               <TouchableOpacity style={styles.micButton}>
-                <Mic size={20} color="#999" />
+              <TouchableOpacity 
+                style={[styles.micButton, isListening && styles.micButtonActive]} 
+                onPress={handleVoiceInput}
+                disabled={isListening}
+              >
+                <Mic size={20} color={isListening ? '#CD853F' : '#999'} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
@@ -393,6 +458,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 8,
+    borderRadius: 16,
+  },
+  micButtonActive: {
+    backgroundColor: 'rgba(205, 133, 63, 0.2)',
   },
   sendButton: {
     width: 32,
