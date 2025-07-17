@@ -91,7 +91,6 @@ export default function TabLayout() {
         name="(recipes)"
         options={{
           title: 'Rezepte',
-          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <ChefHat size={size} color={color} strokeWidth={1.5} />
           ),
