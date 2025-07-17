@@ -9,9 +9,11 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
-import { ArrowLeft, Send } from 'lucide-react-native';
+import { X, Mic, ArrowUp } from 'lucide-react-native';
 import { router } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface Message {
   id: string;
@@ -20,11 +22,19 @@ interface Message {
   timestamp: Date;
 }
 
+const suggestionChips = [
+  'Make vegan',
+  'Add more protein',
+  'Only re...',
+  'Reduce Carbon footprint',
+  'Lower calories',
+];
+
 export default function AppmundScreen() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'How would you like to adjust the recipe?',
+      text: 'Hello, I\'m Appmund, your cooking companion. How do you want to adapt this recipe?',
       isUser: false,
       timestamp: new Date(),
     },
@@ -61,6 +71,10 @@ export default function AppmundScreen() {
     }, 1000);
   };
 
+  const handleSuggestionPress = (suggestion: string) => {
+    setInputText(suggestion);
+  };
+
   useEffect(() => {
     // Auto-scroll to bottom when new messages are added
     setTimeout(() => {
@@ -76,6 +90,14 @@ export default function AppmundScreen() {
         message.isUser ? styles.userMessage : styles.botMessage,
       ]}
     >
+      {!message.isUser && (
+        <View style={styles.botAvatarContainer}>
+          <Image
+            source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=60' }}
+            style={styles.botAvatar}
+          />
+        </View>
+      )}
       <View
         style={[
           styles.messageBubble,
@@ -95,153 +117,193 @@ export default function AppmundScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-            <ArrowLeft size={24} color="#333" />
-          </TouchableOpacity>
-          <View style={styles.headerContent}>
-            <Text style={styles.headerTitle}>Appmund</Text>
-            <Text style={styles.headerSubtitle}>Recipe Assistant</Text>
-          </View>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>A</Text>
-          </View>
-        </View>
-
-        {/* Messages */}
-        <ScrollView
-          ref={scrollViewRef}
-          style={styles.messagesContainer}
-          contentContainerStyle={styles.messagesContent}
-          showsVerticalScrollIndicator={false}
+    <LinearGradient
+      colors={['#4a4a4a', '#8B4513', '#D2691E']}
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          {messages.map(renderMessage)}
-        </ScrollView>
-
-        {/* Input Area */}
-        <View style={styles.inputContainer}>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.textInput}
-              value={inputText}
-              onChangeText={setInputText}
-              placeholder="Type your message..."
-              placeholderTextColor="#999"
-              multiline
-              maxLength={500}
-              onSubmitEditing={handleSendMessage}
-              blurOnSubmit={false}
-            />
-            <TouchableOpacity
-              style={[
-                styles.sendButton,
-                inputText.trim() ? styles.sendButtonActive : styles.sendButtonInactive,
-              ]}
-              onPress={handleSendMessage}
-              disabled={!inputText.trim()}
-            >
-              <Send
-                size={20}
-                color={inputText.trim() ? '#fff' : '#999'}
-              />
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.closeButton} onPress={handleBack}>
+              <X size={24} color="#fff" />
             </TouchableOpacity>
+            <Text style={styles.headerTitle}>Chat mit Skippi</Text>
+            <View style={styles.headerAvatar}>
+              <Image
+                source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=60' }}
+                style={styles.headerAvatarImage}
+              />
+            </View>
           </View>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+
+          {/* Character Image */}
+          <View style={styles.characterContainer}>
+            <Image
+              source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400' }}
+              style={styles.characterImage}
+            />
+          </View>
+
+          {/* Messages */}
+          <ScrollView
+            ref={scrollViewRef}
+            style={styles.messagesContainer}
+            contentContainerStyle={styles.messagesContent}
+            showsVerticalScrollIndicator={false}
+          >
+            {messages.map(renderMessage)}
+          </ScrollView>
+
+          {/* Suggestion Chips */}
+          <View style={styles.suggestionsContainer}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.suggestionsContent}
+            >
+              {suggestionChips.map((suggestion, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.suggestionChip}
+                  onPress={() => handleSuggestionPress(suggestion)}
+                >
+                  <Text style={styles.suggestionText}>{suggestion}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+
+          {/* Input Area */}
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.inputPrefix}>+</Text>
+              <TextInput
+                style={styles.textInput}
+                value={inputText}
+                onChangeText={setInputText}
+                placeholder="Frag mich etwas..."
+                placeholderTextColor="#999"
+                multiline
+                maxLength={500}
+                onSubmitEditing={handleSendMessage}
+                blurOnSubmit={false}
+              />
+              <TouchableOpacity style={styles.micButton}>
+                <Mic size={20} color="#999" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.sendButton,
+                  inputText.trim() ? styles.sendButtonActive : styles.sendButtonInactive,
+                ]}
+                onPress={handleSendMessage}
+                disabled={!inputText.trim()}
+              >
+                <ArrowUp
+                  size={20}
+                  color={inputText.trim() ? '#fff' : '#999'}
+                />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.disclaimer}>
+              Skippi lernt noch – Antworten können Fehler enthalten.
+            </Text>
+          </View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
     paddingTop: 60,
   },
-  backButton: {
+  closeButton: {
     width: 40,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
-  },
-  headerContent: {
-    flex: 1,
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: '600',
+    color: '#fff',
   },
-  headerSubtitle: {
-    fontSize: 14,
-    color: '#666',
-  },
-  avatar: {
+  headerAvatar: {
     width: 40,
     height: 40,
-    backgroundColor: '#D32F2F',
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    overflow: 'hidden',
   },
-  avatarText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+  headerAvatarImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  characterContainer: {
+    alignItems: 'center',
+    paddingVertical: 40,
+  },
+  characterImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 12,
+    resizeMode: 'cover',
   },
   messagesContainer: {
     flex: 1,
+    paddingHorizontal: 20,
   },
   messagesContent: {
-    padding: 20,
-    paddingBottom: 10,
+    paddingBottom: 20,
   },
   messageContainer: {
     marginBottom: 16,
-  },
-  userMessage: {
+    flexDirection: 'row',
     alignItems: 'flex-end',
   },
+  userMessage: {
+    justifyContent: 'flex-end',
+  },
   botMessage: {
-    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  botAvatarContainer: {
+    marginRight: 8,
+    marginBottom: 4,
+  },
+  botAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    resizeMode: 'cover',
   },
   messageBubble: {
-    maxWidth: '80%',
+    maxWidth: '75%',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 20,
   },
   userBubble: {
-    backgroundColor: '#D32F2F',
+    backgroundColor: '#007AFF',
     borderBottomRightRadius: 4,
   },
   botBubble: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     borderBottomLeftRadius: 4,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
   },
   messageText: {
     fontSize: 16,
@@ -251,12 +313,28 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   botText: {
+    color: '#fff',
+  },
+  suggestionsContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  suggestionsContent: {
+    paddingRight: 20,
+  },
+  suggestionChip: {
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginRight: 8,
+  },
+  suggestionText: {
+    fontSize: 14,
     color: '#333',
+    fontWeight: '500',
   },
   inputContainer: {
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
     paddingHorizontal: 20,
     paddingVertical: 16,
     paddingBottom: Platform.OS === 'ios' ? 34 : 16,
@@ -264,11 +342,18 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     borderRadius: 24,
     paddingHorizontal: 16,
     paddingVertical: 8,
     minHeight: 48,
+    marginBottom: 8,
+  },
+  inputPrefix: {
+    fontSize: 18,
+    color: '#999',
+    marginRight: 8,
+    paddingVertical: 8,
   },
   textInput: {
     flex: 1,
@@ -277,18 +362,31 @@ const styles = StyleSheet.create({
     maxHeight: 100,
     paddingVertical: 8,
   },
+  micButton: {
+    width: 32,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
   sendButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 8,
+    marginLeft: 4,
   },
   sendButtonActive: {
-    backgroundColor: '#D32F2F',
+    backgroundColor: '#8B7355',
   },
   sendButtonInactive: {
     backgroundColor: 'transparent',
+  },
+  disclaimer: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.7)',
+    textAlign: 'center',
+    marginTop: 4,
   },
 });
