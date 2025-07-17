@@ -93,7 +93,7 @@ export default function AppmundScreen() {
       {!message.isUser && (
         <View style={styles.botAvatarContainer}>
           <Image
-            source={{ uri: 'https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg?auto=compress&cs=tinysrgb&w=60' }}
+            source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=60' }}
             style={styles.botAvatar}
           />
         </View>
@@ -118,7 +118,7 @@ export default function AppmundScreen() {
 
   return (
     <LinearGradient
-      colors={['#4a4a4a', '#8B4513', '#CD853F']}
+      colors={['#4a4a4a', '#8B0000', '#D32F2F']}
       style={styles.container}
     >
       <SafeAreaView style={styles.container}>
@@ -134,28 +134,31 @@ export default function AppmundScreen() {
             <Text style={styles.headerTitle}>Chat mit Appmund</Text>
             <View style={styles.headerAvatar}>
               <Image
-                source={{ uri: 'https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg?auto=compress&cs=tinysrgb&w=60' }}
+                source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=60' }}
                 style={styles.headerAvatarImage}
               />
             </View>
           </View>
 
-          {/* Character Image */}
-          <View style={styles.characterContainer}>
-            <Image
-              source={{ uri: 'https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg?auto=compress&cs=tinysrgb&w=400' }}
-              style={styles.characterImage}
-            />
-          </View>
-
-          {/* Messages */}
+          {/* Scrollable Content */}
           <ScrollView
             ref={scrollViewRef}
-            style={styles.messagesContainer}
-            contentContainerStyle={styles.messagesContent}
+            style={styles.scrollContainer}
+            contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
-            {messages.map(renderMessage)}
+            {/* Recipe Image */}
+            <View style={styles.recipeImageContainer}>
+              <Image
+                source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800' }}
+                style={styles.recipeImage}
+              />
+            </View>
+
+            {/* Messages */}
+            <View style={styles.messagesContainer}>
+              {messages.map(renderMessage)}
+            </View>
           </ScrollView>
 
           {/* Suggestion Chips */}
@@ -252,23 +255,27 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
+    borderRadius: 20,
   },
-  characterContainer: {
+  scrollContainer: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 20,
+  },
+  recipeImageContainer: {
     alignItems: 'center',
-    paddingVertical: 40,
+    paddingVertical: 30,
+    paddingHorizontal: 40,
   },
-  characterImage: {
-    width: 200,
-    height: 200,
+  recipeImage: {
+    width: '100%',
+    height: 250,
     borderRadius: 12,
     resizeMode: 'cover',
   },
   messagesContainer: {
-    flex: 1,
     paddingHorizontal: 20,
-  },
-  messagesContent: {
-    paddingBottom: 20,
   },
   messageContainer: {
     marginBottom: 16,
@@ -378,7 +385,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   sendButtonActive: {
-    backgroundColor: '#CD853F',
+    backgroundColor: '#D32F2F',
   },
   sendButtonInactive: {
     backgroundColor: 'transparent',
