@@ -4,16 +4,13 @@ import { Chrome as Home, Ticket, CreditCard, Percent, ChefHat } from 'lucide-rea
 import { usePathname } from 'expo-router';
 
 export default function TabLayout() {
-  const pathname = usePathname();
-  const isRecipeDetail = pathname.match(/\/\(recipes\)\/\d+$/);
-
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#2563eb',
         tabBarInactiveTintColor: '#6b7280',
-        tabBarStyle: isRecipeDetail ? { display: 'none' } : {
+        tabBarStyle: {
           backgroundColor: '#ffffff',
           borderTopWidth: 1,
           borderTopColor: '#e5e7eb',

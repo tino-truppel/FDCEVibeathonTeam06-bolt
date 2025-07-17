@@ -56,7 +56,7 @@ const recipes = [
 
 export default function RecipesScreen() {
   const handleRecipePress = (recipeId: string) => {
-    router.push(`/(tabs)/(recipes)/${recipeId}`);
+    router.push(`/recipe/${recipeId}`);
   };
 
   const renderRecipeCard = (recipe: typeof recipes[0]) => (
