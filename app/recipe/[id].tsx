@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -6,10 +7,13 @@ import {
   ScrollView, 
   TouchableOpacity, 
   Image,
-  SafeAreaView 
+  SafeAreaView,
+  Modal,
+  Animated
 } from 'react-native';
 import { ArrowLeft, Heart, Clock, Users } from 'lucide-react-native';
 import { useLocalSearchParams, router } from 'expo-router';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 const recipeData = {
   '1': {
@@ -152,8 +156,43 @@ const recipeData = {
 };
 
 export default function RecipeDetailScreen() {
-  const { id } = useLocalSearchParams();
+  const { id, showSuccess } = useLocalSearchParams();
   const recipe = recipeData[id as string];
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const fadeAnim = new Animated.Value(0);
+
+  useEffect(() => {
+    if (showSuccess === 'true') {
+      setShowSuccessOverlay(true);
+      setShowConfetti(true);
+      
+      // Fade in animation
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+      
+      // Hide confetti after 3 seconds
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 3000);
+      
+      // Hide overlay after 5 seconds
+      setTimeout(() => {
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }).start(() => {
+          setShowSuccessOverlay(false);
+          // Clear the success parameter
+          router.setParams({ showSuccess: undefined });
+        });
+      }, 5000);
+    }
+  }, [showSuccess]);
 
   if (!recipe) {
     return (
@@ -171,6 +210,17 @@ export default function RecipeDetailScreen() {
     router.push('/appmund');
   };
 
+  const handleCloseOverlay = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setShowSuccessOverlay(false);
+      setShowConfetti(false);
+      router.setParams({ showSuccess: undefined });
+    });
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -253,6 +303,37 @@ export default function RecipeDetailScreen() {
       <TouchableOpacity style={styles.floatingButton} onPress={handlePersonalizeRecipe}>
         <Text style={styles.floatingButtonText}>Personalize Recipe</Text>
       </TouchableOpacity>
+      
+      {/* Success Overlay */}
+      {showSuccessOverlay && (
+        <Animated.View style={[styles.successOverlay, { opacity: fadeAnim }]}>
+          <TouchableOpacity 
+            style={styles.overlayBackground} 
+            onPress={handleCloseOverlay}
+            activeOpacity={1}
+          >
+            <View style={styles.successCard}>
+              <Text style={styles.successTitle}>Here is your new recipe</Text>
+              <Text style={styles.successDescription}>
+                Great choice! You've reduced the carbon footprint of this recipe by 60%
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+      
+      {/* Confetti */}
+      {showConfetti && (
+        <ConfettiCannon
+          count={200}
+          origin={{x: -10, y: 0}}
+          autoStart={true}
+          fadeOut={true}
+          colors={['#4CAF50', '#8BC34A', '#CDDC39', '#66BB6A', '#81C784']}
+          explosionSpeed={350}
+          fallSpeed={3000}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -460,5 +541,51 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
+  },
+  successOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  overlayBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  successCard: {
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 30,
+    marginHorizontal: 40,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  successTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  successDescription: {
+    fontSize: 16,
+    color: '#4CAF50',
+    textAlign: 'center',
+    lineHeight: 24,
+    fontWeight: '500',
   },
 });

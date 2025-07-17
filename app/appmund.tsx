@@ -161,9 +161,12 @@ export default function AppmundScreen() {
   }, [messages]);
 
   const handleCreateRecipe = (messageId: string) => {
-    // Handle recipe creation logic here
-    console.log('Creating new recipe for message:', messageId);
-    // You can add navigation to a recipe creation screen or show a modal
+    // Navigate back to recipe screen with success state
+    router.back();
+    // Pass success state via router params
+    setTimeout(() => {
+      router.setParams({ showSuccess: 'true' });
+    }, 100);
   };
 
   const renderMessage = (message: Message) => (
