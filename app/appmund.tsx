@@ -66,7 +66,7 @@ export default function AppmundScreen() {
     setTimeout(() => {
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'I understand you want to adjust the recipe. Let me help you with that modification. I suggest changing the milk to oat milk and avocado to beans. Would you like to create a new recipe based on this?',
+        text: 'I suggest changing the milk to oat milk and avocado to beans. Would you like to create a new recipe based on this?',
         isUser: false,
         timestamp: new Date(),
       };
@@ -88,7 +88,7 @@ export default function AppmundScreen() {
     setTimeout(() => {
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: `I understand you want to "${suggestion.toLowerCase()}". Let me help you with that modification to the recipe. I suggest changing the milk to oat milk and avocado to beans. Would you like to create a new recipe based on this?`,
+        text: `I suggest changing the milk to oat milk and avocado to beans. Would you like to create a new recipe based on this?`,
         isUser: false,
         timestamp: new Date(),
       };
