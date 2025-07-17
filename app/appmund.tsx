@@ -24,9 +24,12 @@ interface Message {
   timestamp: Date;
 }
 
-const confirmationOptions = [
-  'Yes!',
-  'Give me other options',
+const suggestionChips = [
+  'Make vegan',
+  'Add more protein',
+  'Only re...',
+  'Reduce Carbon footprint',
+  'Lower calories',
 ];
 
 export default function AppmundScreen() {
@@ -71,10 +74,10 @@ export default function AppmundScreen() {
     }, 1000);
   };
 
-  const handleConfirmationPress = (option: string) => {
+  const handleSuggestionPress = (suggestion: string) => {
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: option,
+      text: suggestion,
       isUser: true,
       timestamp: new Date(),
     };
@@ -85,9 +88,7 @@ export default function AppmundScreen() {
     setTimeout(() => {
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: option === 'Yes!' 
-          ? 'Great! I\'ll help you create a new recipe with your modifications. Would you like to create a new recipe based on this?'
-          : 'Here are some other options you can try: make it vegan, add more protein, reduce calories, make it gluten-free, or use less salt. Would you like to create a new recipe based on this?',
+        text: `I understand you want to "${suggestion.toLowerCase()}". Let me help you with that modification to the recipe. Would you like to create a new recipe based on this?`,
         isUser: false,
         timestamp: new Date(),
       };
@@ -257,26 +258,20 @@ export default function AppmundScreen() {
             </View>
           </ScrollView>
 
-          {/* Confirmation Options */}
-          <View style={styles.confirmationOptionsContainer}>
+          {/* Suggestion Chips */}
+          <View style={styles.suggestionsContainer}>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.confirmationOptionsContent}
+              contentContainerStyle={styles.suggestionsContent}
             >
-              {confirmationOptions.map((option, index) => (
+              {suggestionChips.map((suggestion, index) => (
                 <TouchableOpacity
                   key={index}
-                  style={[
-                    styles.confirmationOption,
-                    option === 'Yes!' ? styles.yesOption : styles.otherOption
-                  ]}
-                  onPress={() => handleConfirmationPress(option)}
+                  style={styles.suggestionChip}
+                  onPress={() => handleSuggestionPress(suggestion)}
                 >
-                  <Text style={[
-                    styles.confirmationOptionText,
-                    option === 'Yes!' ? styles.yesOptionText : styles.otherOptionText
-                  ]}>{option}</Text>
+                  <Text style={styles.suggestionText}>{suggestion}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -428,44 +423,24 @@ const styles = StyleSheet.create({
   botText: {
     color: '#fff',
   },
-  confirmationOptionsContainer: {
+  suggestionsContainer: {
     paddingHorizontal: 20,
     paddingVertical: 16,
   },
-  confirmationOptionsContent: {
+  suggestionsContent: {
     paddingRight: 20,
-    justifyContent: 'center',
-    gap: 12,
   },
-  confirmationOption: {
-    borderRadius: 24,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    marginRight: 12,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  yesOption: {
-    backgroundColor: '#CD853F',
-  },
-  otherOption: {
+  suggestionChip: {
     backgroundColor: 'rgba(255,255,255,0.9)',
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginRight: 8,
   },
-  confirmationOptionText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  yesOptionText: {
-    color: '#fff',
-  },
-  otherOptionText: {
+  suggestionText: {
+    fontSize: 14,
     color: '#333',
+    fontWeight: '500',
   },
   inputContainer: {
     paddingHorizontal: 20,
