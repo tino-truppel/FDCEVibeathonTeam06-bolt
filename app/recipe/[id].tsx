@@ -244,6 +244,11 @@ export default function RecipeDetailScreen() {
           </View>
         </View>
       </ScrollView>
+      
+      {/* Floating Action Button */}
+      <TouchableOpacity style={styles.floatingButton}>
+        <Text style={styles.floatingButtonText}>Personalize Recipe</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -429,5 +434,27 @@ const styles = StyleSheet.create({
     color: '#333',
     flex: 1,
     lineHeight: 22,
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 30,
+    right: 20,
+    backgroundColor: '#D32F2F',
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  floatingButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
