@@ -1,15 +1,19 @@
 import { Tabs } from 'expo-router';
 import { View } from 'react-native';
 import { Chrome as Home, Ticket, CreditCard, Percent, ChefHat } from 'lucide-react-native';
+import { usePathname } from 'expo-router';
 
 export default function TabLayout() {
+  const pathname = usePathname();
+  const isRecipeDetail = pathname.includes('/(recipes)/') && pathname !== '/(recipes)/' && pathname !== '/(recipes)';
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#2563eb',
         tabBarInactiveTintColor: '#6b7280',
-        tabBarStyle: {
+        tabBarStyle: isRecipeDetail ? { display: 'none' } : {
           backgroundColor: '#ffffff',
           borderTopWidth: 1,
           borderTopColor: '#e5e7eb',
