@@ -273,7 +273,6 @@ export default function AppmundScreen() {
                 onSubmitEditing={handleSendMessage}
                 blurOnSubmit={false}
               />
-              <TouchableOpacity style={styles.micButton}>
               <TouchableOpacity 
                 style={[styles.micButton, isListening && styles.micButtonActive]} 
                 onPress={handleVoiceInput}
