@@ -167,6 +167,10 @@ export default function RecipeDetailScreen() {
     router.back();
   };
 
+  const handlePersonalizeRecipe = () => {
+    router.push('/appmund');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -246,7 +250,7 @@ export default function RecipeDetailScreen() {
       </ScrollView>
       
       {/* Floating Action Button */}
-      <TouchableOpacity style={styles.floatingButton}>
+      <TouchableOpacity style={styles.floatingButton} onPress={handlePersonalizeRecipe}>
         <Text style={styles.floatingButtonText}>Personalize Recipe</Text>
       </TouchableOpacity>
     </SafeAreaView>
