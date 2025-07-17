@@ -5,7 +5,7 @@ import { usePathname } from 'expo-router';
 
 export default function TabLayout() {
   const pathname = usePathname();
-  const isRecipeDetail = pathname.includes('/(recipes)/') && pathname !== '/(recipes)/' && pathname !== '/(recipes)';
+  const isRecipeDetail = pathname.match(/\/\(recipes\)\/\d+$/);
 
   return (
     <Tabs
