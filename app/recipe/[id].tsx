@@ -309,24 +309,15 @@ export default function RecipeDetailScreen() {
       {/* {showSuccessOverlay && ( */}
         <Modal
           visible={true}
-          transparent={true}
           animationType="fade"
           onRequestClose={handleCloseOverlay}
         >
-          <Animated.View style={[styles.successOverlay, { opacity: fadeAnim }]}>
-            <TouchableOpacity 
-              style={styles.overlayBackground} 
-              onPress={handleCloseOverlay}
-              activeOpacity={1}
-            >
               <View style={styles.successCard}>
                 <Text style={styles.successTitle}>Here is your new recipe</Text>
                 <Text style={styles.successDescription}>
                   Great choice! You've reduced the carbon footprint of this recipe by 60%
                 </Text>
               </View>
-            </TouchableOpacity>
-          </Animated.View>
         </Modal>
       {/* )} */}
       
