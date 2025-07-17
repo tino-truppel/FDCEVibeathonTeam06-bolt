@@ -72,7 +72,25 @@ export default function AppmundScreen() {
   };
 
   const handleSuggestionPress = (suggestion: string) => {
-    setInputText(suggestion);
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: suggestion,
+      isUser: true,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+
+    // Simulate bot response after a short delay
+    setTimeout(() => {
+      const botResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: `I understand you want to "${suggestion.toLowerCase()}". Let me help you with that modification to the recipe.`,
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, botResponse]);
+    }, 1000);
   };
 
   useEffect(() => {
