@@ -293,6 +293,7 @@ export default function AppmundScreen() {
                   color={inputText.trim() ? '#fff' : '#999'}
                 />
               </TouchableOpacity>
+              </TouchableOpacity>
             </View>
             <Text style={styles.disclaimer}>
               Appmund lernt noch – Antworten können Fehler enthalten.
