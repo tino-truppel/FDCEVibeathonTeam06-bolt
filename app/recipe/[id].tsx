@@ -178,19 +178,6 @@ export default function RecipeDetailScreen() {
       setTimeout(() => {
         setShowConfetti(false);
       }, 3000);
-      
-      // Hide overlay after 5 seconds
-      setTimeout(() => {
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true,
-        }).start(() => {
-          setShowSuccessOverlay(false);
-          // Clear the success parameter
-          router.setParams({ showSuccess: undefined });
-        });
-      }, 5000);
     }
   }, [showSuccess]);
 
@@ -313,11 +300,16 @@ export default function RecipeDetailScreen() {
           animationType="fade"
           onRequestClose={handleCloseOverlay}
         >
-          <View style={styles.successCard}>
-            <Text style={styles.successTitle}>Here is your new recipe</Text>
-            <Text style={styles.successDescription}>
-              Great choice! You've reduced the carbon footprint of this recipe by 60%
-            </Text>
+          <View style={styles.modalOverlay}>
+            <View style={styles.successCard}>
+              <Text style={styles.successTitle}>Here is your new recipe</Text>
+              <Text style={styles.successDescription}>
+                Great choice! You've reduced the carbon footprint of this recipe by 60%
+              </Text>
+              <TouchableOpacity style={styles.closeButton} onPress={handleCloseOverlay}>
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modal>
       {/* )} */}
@@ -545,17 +537,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
-  successOverlay: {
+  modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  overlayBackground: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
   },
   successCard: {
     backgroundColor: '#fff',
@@ -585,6 +571,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 24,
     fontWeight: '500',
+    marginBottom: 24,
+  },
+  closeButton: {
+    backgroundColor: '#D32F2F',
+    borderRadius: 25,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
   confettiContainer: {
     position: 'absolute',
