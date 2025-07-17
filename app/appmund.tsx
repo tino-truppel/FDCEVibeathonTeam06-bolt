@@ -93,7 +93,7 @@ export default function AppmundScreen() {
       {!message.isUser && (
         <View style={styles.botAvatarContainer}>
           <Image
-            source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=60' }}
+            source={{ uri: 'https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg?auto=compress&cs=tinysrgb&w=60' }}
             style={styles.botAvatar}
           />
         </View>
@@ -118,7 +118,7 @@ export default function AppmundScreen() {
 
   return (
     <LinearGradient
-      colors={['#4a4a4a', '#8B4513', '#D2691E']}
+      colors={['#4a4a4a', '#8B0000', '#D32F2F']}
       style={styles.container}
     >
       <SafeAreaView style={styles.container}>
@@ -131,10 +131,10 @@ export default function AppmundScreen() {
             <TouchableOpacity style={styles.closeButton} onPress={handleBack}>
               <X size={24} color="#fff" />
             </TouchableOpacity>
-            <Text style={styles.headerTitle}>Chat mit Skippi</Text>
+            <Text style={styles.headerTitle}>Chat mit Appmund</Text>
             <View style={styles.headerAvatar}>
               <Image
-                source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=60' }}
+                source={{ uri: 'https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg?auto=compress&cs=tinysrgb&w=60' }}
                 style={styles.headerAvatarImage}
               />
             </View>
@@ -143,7 +143,7 @@ export default function AppmundScreen() {
           {/* Character Image */}
           <View style={styles.characterContainer}>
             <Image
-              source={{ uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400' }}
+              source={{ uri: 'https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg?auto=compress&cs=tinysrgb&w=400' }}
               style={styles.characterImage}
             />
           </View>
@@ -210,7 +210,7 @@ export default function AppmundScreen() {
               </TouchableOpacity>
             </View>
             <Text style={styles.disclaimer}>
-              Skippi lernt noch – Antworten können Fehler enthalten.
+              Appmund lernt noch – Antworten können Fehler enthalten.
             </Text>
           </View>
         </KeyboardAvoidingView>
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   sendButtonActive: {
-    backgroundColor: '#8B7355',
+    backgroundColor: '#D32F2F',
   },
   sendButtonInactive: {
     backgroundColor: 'transparent',
