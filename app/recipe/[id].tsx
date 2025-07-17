@@ -223,6 +223,7 @@ export default function RecipeDetailScreen() {
   };
   return (
     <SafeAreaView style={styles.container}>
+      <>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header Image */}
         <View style={styles.imageContainer}>
@@ -343,6 +344,7 @@ export default function RecipeDetailScreen() {
           />
         </View>
       )}
+      </>
     </SafeAreaView>
   );
 }
