@@ -118,7 +118,7 @@ export default function AppmundScreen() {
 
   return (
     <LinearGradient
-      colors={['#4a4a4a', '#8B0000', '#D32F2F']}
+      colors={['#4a4a4a', '#8B4513', '#CD853F']}
       style={styles.container}
     >
       <SafeAreaView style={styles.container}>
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   sendButtonActive: {
-    backgroundColor: '#D32F2F',
+    backgroundColor: '#CD853F',
   },
   sendButtonInactive: {
     backgroundColor: 'transparent',
