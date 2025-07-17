@@ -308,7 +308,7 @@ export default function RecipeDetailScreen() {
       {/* Success Overlay */}
       {/* {showSuccessOverlay && ( */}
         <Modal
-          visible={true}
+          visible={showSuccessOverlay}
           transparent={true}
           animationType="fade"
           onRequestClose={handleCloseOverlay}
